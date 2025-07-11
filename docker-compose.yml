@@ -1,0 +1,37 @@
+services:
+
+  tunnel:
+    container_name: tunnel
+    build:
+      context: ./tunnel
+      dockerfile: Dockerfile
+      no_cache: false
+    restart: always
+    volumes:
+      - ./id_rsa_per.pub:/root/.ssh/id_rsa:ro
+    networks:
+      - network
+    # profiles:
+    #   - donotstart
+  
+  adminer:
+    container_name: adminer
+    build:
+      context: ./adminer
+      dockerfile: Dockerfile
+      no_cache: false
+    restart: always
+    depends_on:
+      - tunnel
+    ports:
+     - ${ADMIN_PORT}:${ADMIN_PORT}
+    env_file:
+     - .env
+    networks:
+      - network
+    # profiles:
+    #   - donotstart
+
+networks:
+  network:
+    driver: bridge
