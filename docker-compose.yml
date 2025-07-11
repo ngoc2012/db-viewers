@@ -7,8 +7,11 @@ services:
       dockerfile: Dockerfile
       no_cache: false
     restart: always
+    env_file:
+     - .env
     volumes:
-      - ./id_rsa_per.pub:/root/.ssh/id_rsa
+      - ./tunnel/id_rsa_per:/root/.ssh/id_rsa
+      # - ./tunnel/id_rsa_per.pub:/root/.ssh/id_rsa.pub
     networks:
       - network
     # profiles:
